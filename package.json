@@ -9,10 +9,10 @@
   },
   "dependencies": {
     "@howdyjs/mouse-menu": "^2.0.5",
-    "@types/file-saver": "^2.0.5",
     "@types/prettier": "^2.6.0",
     "element-plus": "^2.1.11",
-    "file-saver": "^2.0.5",
+    "html2canvas": "^1.4.1",
+    "jspdf": "^2.5.1",
     "node-html-parser": "^5.3.3",
     "prettier": "^2.6.2",
     "sass": "^1.51.0",

@@ -13,12 +13,6 @@
       <el-tooltip effect="light" content="合并单元格" placement="top">
         <el-button type="primary" @click="merge" plain :icon="Expand" circle></el-button>
       </el-tooltip>
-      <el-tooltip effect="light" content="导出html文件" placement="top">
-        <el-button type="primary" @click="exportFile('html')" plain :icon="Notebook" circle></el-button>
-      </el-tooltip>
-      <el-tooltip effect="light" content="导出excel文件" placement="top">
-        <el-button type="primary" @click="exportFile('xlsx')" plain :icon="Film" circle></el-button>
-      </el-tooltip>
     </el-form-item>
   </el-form>
 </template>
@@ -34,7 +28,7 @@ const form = reactive({
   row: 6,
   column: 5,
 });
-const emits = defineEmits(["createTable", "merge", "exportFile", "transform"]); // 触发父组件事件
+const emits = defineEmits(["createTable", "merge"]); // 触发父组件事件
 
 const check = (rule: any, value: any, callback: any) => {
   if (!value) {
@@ -66,9 +60,6 @@ const submitForm = async () => {
 };
 const merge = () => {
   emits("merge");
-};
-const exportFile = (type: string) => {
-  emits("exportFile", type);
 };
 
 </script>

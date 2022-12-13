@@ -8,7 +8,7 @@
   <el-aside class="aside">
     <el-card>
       <template #header> 表单操作 </template>
-      <form-table @createTable="createdTable" @merge="merge" @exportFile="exportFile" />
+      <form-table @createTable="createdTable" @merge="merge"/>
     </el-card>
     <el-card>
       <template #header> 导入文件 </template>
@@ -68,10 +68,8 @@ import { TdOption } from "@/interface/TdModule"; // 样式表
 
 // hook 拖拽框
 import maskHook from "@/hook/mask";
-// Hook 导出html文件
-import exportHtmlHook from "@/hook/exportHtml";
 // Hook 导出excel文件
-import tableToExcel from "@/hook/tableToExcel";
+import tableToExcel from "@/hook/tableToExport";
 // 鼠标右键菜单行为
 import { MouseMenuDirective } from "@howdyjs/mouse-menu";
 
@@ -88,9 +86,9 @@ const {
   resSetXY, // 清除
 } = maskHook();
 // 导出html文件hook
-const { getHtml } = exportHtmlHook();
+// const { getHtml } = exportHtmlHook();
 // 导出excel文件hook
-const { exportExcel } = tableToExcel();
+const { exportExcel, onSaveCanvas, onPDFExport, onExportHtml } = tableToExcel();
 
 const tableData = ref<TdOption[][]>([]); // 表格数据
 
@@ -132,6 +130,37 @@ const menuOptions = {
         addRow(params.row + 1);
       },
     },
+    {
+      label: "合并单元格",
+      tips: "合并",
+      fn: () => {
+        merge();
+      },
+    },
+    {
+      label: "导出图片",
+      fn: () => {
+        onSaveCanvas(table.value);
+      },
+    },
+    {
+      label: "导出excel",
+      fn: () => {
+        exportExcel(table.value);
+      },
+    },
+    {
+      label: "导出HTML",
+      fn: () => {
+        onExportHtml(table.value);
+      },
+    },
+    {
+      label: "导出PDF",
+      fn: () => {
+        onPDFExport(table.value);
+      },
+    }
   ],
   menuWrapperCss: {
     background: "#fff",
@@ -237,31 +266,6 @@ const getValue = (addend1: string, addend2: string) => {
   const value1 = addend1.replace("px", "");
   const value2 = addend2.replace("px", "");
   return `${Number(value1) + Number(value2)}px`;
-};
-// 导出文件事件
-const exportFile = (type: string) => {
-  if (!table!.value) {
-    return;
-  }
-  if (type === "html") {
-    exportHtml(table.value);
-  } else if (type === "xlsx") {
-    exportExcel(table.value);
-  }
-};
-// 导出html
-const exportHtml = (table: any) => {
-  let template = table.outerHTML;
-  const a = document.createElement("a");
-  const url = window.URL.createObjectURL(
-    new Blob([getHtml(template)], {
-      type: "",
-    })
-  );
-  a.href = url;
-  a.download = "模板.html";
-  a.click();
-  window.URL.revokeObjectURL(url);
 };
 // 添加行
 const addRow = (index: number) => {

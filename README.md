@@ -10,7 +10,7 @@ npm run build
 ```
 
 ## 组件使用
-- file-saver、xlsx（excel导出）
+- xlsx（excel导出）
 - prettier（格式化html导出）
 - @howdyjs/mouse-menu（右键）
 
@@ -18,8 +18,11 @@ npm run build
 - 右键菜单新增行、列
 - 拖动选择合并单元格
 - 自定义 表格内容、行内元素样式
-- 可以导出html
-- 导出 excel
+- 可以导出
+  - html
+  - pdf
+  - excel
+  - 图片
 - 可以再次导入 html 重新进行编辑
 ## 未来即将支持
 - 表单内组件选择

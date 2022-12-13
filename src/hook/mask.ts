@@ -28,13 +28,15 @@ export default function () {
   });
   //鼠标按下事件
   const handleMouseDown = (event: MouseEvent) => {
-    positionList.is_show_mask = true;
-    positionList.start_x = event.clientX;
-    positionList.start_y = event.clientY;
-    positionList.end_x = event.clientX;
-    positionList.end_y = event.clientY;
-    document.body.addEventListener("mousemove", handleMouseMove); //监听鼠标移动事件
-    document.body.addEventListener("mouseup", handleMouseUp); //监听鼠标抬起事件
+    if (event.button == 0) {
+      positionList.is_show_mask = true;
+      positionList.start_x = event.clientX;
+      positionList.start_y = event.clientY;
+      positionList.end_x = event.clientX;
+      positionList.end_y = event.clientY;
+      document.body.addEventListener("mousemove", handleMouseMove); //监听鼠标移动事件
+      document.body.addEventListener("mouseup", handleMouseUp); //监听鼠标抬起事件
+    }
   };
 
   function handleMouseMove(event: MouseEvent) {
@@ -42,10 +44,13 @@ export default function () {
     positionList.end_y = event.clientY;
   }
 
-  function handleMouseUp() {
-    document.body.removeEventListener("mousemove", handleMouseMove);
-    document.body.removeEventListener("mouseup", handleMouseUp);
-    handleDomSelect();
+  function handleMouseUp(event: MouseEvent) {
+    if (event.button == 0) {
+      document.body.removeEventListener("mousemove", handleMouseMove);
+      document.body.removeEventListener("mouseup", handleMouseUp);
+      handleDomSelect();
+    }
+
     // resSetXY();
   }
   // 选中dom中的值
@@ -62,10 +67,10 @@ export default function () {
       //getClientRects()每一个盒子的边界矩形的矩形集合
       const rect_select: DOMRect = dom_mask.getClientRects()[0];
       // 判断一下拖拽框是不是有覆盖了table
-      const tableDom = document.querySelectorAll("table")[0].getClientRects()[0]
-      if(collide(tableDom, rect_select) === false){
+      const tableDom = document.querySelectorAll("table")[0].getClientRects()[0];
+      if (collide(tableDom, rect_select) === false) {
         resSetXY();
-        return
+        return;
       }
       document.querySelectorAll(".table-box td").forEach((node, index) => {
         const rects: DOMRect = node.getClientRects()[0];
@@ -86,7 +91,7 @@ export default function () {
           resSetXY();
         }
       }
-    })
+    });
   }
   //比较checkbox盒子边界和遮罩层边界最大最小值
   // rect1当前选中的节点
